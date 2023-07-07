@@ -33,3 +33,15 @@ CREATE TABLE IF NOT EXISTS public.schedule_history
     lastrunstate character varying(255) COLLATE pg_catalog."default",
     CONSTRAINT schedulehistoryid_pkey PRIMARY KEY (schedulehistoryid)
 )
+
+Projects table :
+
+
+CREATE TABLE IF NOT EXISTS public.projects
+(
+    project_id character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    project_title character varying(255) COLLATE pg_catalog."default",
+    description character varying(255) COLLATE pg_catalog."default",
+    createdon timestamp without time zone,
+    CONSTRAINT projects_pkey PRIMARY KEY (project_id)
+)
