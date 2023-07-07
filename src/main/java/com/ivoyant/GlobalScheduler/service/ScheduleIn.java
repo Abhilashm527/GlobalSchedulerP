@@ -45,4 +45,7 @@ public interface ScheduleIn {
     @GetMapping("/getAllProject")
     public ResponseEntity getAllProject() throws SQLException;
 
+    @GetMapping("/getAllSchedulesByProjectId/{id}")
+    public ResponseEntity getAllSchedulesByProjectId(@PathVariable String id) throws SQLException;
+
 }

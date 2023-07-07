@@ -13,6 +13,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -32,6 +33,8 @@ public class ProjectImpl {
 
     private static  final  String getAllProjects = "select * from public.projects ";
     private static final String deleteProjectSQl = "delete from public.projects where project_id = ?";
+
+    private static final String getAllSchedulesByProjectId = "select * from public.schedule where projectid =?";
 
     public ProjectImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -134,5 +137,28 @@ public class ProjectImpl {
             projectList.add(project);
         }
         return projectList;
+    }
+
+    public HashMap<String,Object> getAllSchedulesByProjectId(String id) throws SQLException {
+        PreparedStatement getAllSchedules = jdbcTemplateConnection.prepareStatement(getAllSchedulesByProjectId);
+        getAllSchedules.setString(1,id);
+        ResultSet resultSet = getAllSchedules.executeQuery();
+        List<HashMap<String, Object>> scheduleList = new ArrayList<>();
+        HashMap<String, Object> scheduleHistory = new HashMap<>();
+
+        while (resultSet.next()) {
+            HashMap<String, Object> schedule = new HashMap<>();
+            schedule.put("schedule Id", resultSet.getInt("scheduleId"));
+            schedule.put("Schedulename",resultSet.getString("name"));
+            schedule.put("Target", resultSet.getString("target"));
+            schedule.put("Active", String.valueOf(resultSet.getBoolean("active")));
+            schedule.put("TargetType", resultSet.getString("targetType"));
+            scheduleList.add(schedule);
+        }
+        if (!scheduleList.isEmpty()) {
+            scheduleHistory.put("Schedules", scheduleList);
+            scheduleHistory.put("Project Id",id);
+        }
+        return scheduleHistory;
     }
 }

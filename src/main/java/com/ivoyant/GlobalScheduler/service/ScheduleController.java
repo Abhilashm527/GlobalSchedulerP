@@ -97,4 +97,12 @@ public class ScheduleController implements ScheduleIn {
             return ResponseEntity.ok("No Projects");
         return ResponseEntity.ok(projectList);
     }
+
+    @Override
+    public ResponseEntity getAllSchedulesByProjectId(String id) throws SQLException {
+        HashMap<String,Object> scheduleList = projectImpl.getAllSchedulesByProjectId(id);
+        if (scheduleList == null || scheduleList.isEmpty())
+            return ResponseEntity.ok("No schedules found for the given Project Id : "+id);
+        return ResponseEntity.ok(scheduleList);
+    }
 }
